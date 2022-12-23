@@ -1,0 +1,47 @@
+@startuml
+
+object input {
+    label: string,
+}
+
+object GroupName {
+    state groupName: string
+}
+object GroupDescription {
+    state groupDescription: string
+}
+object GroupMemberInput {
+    state GroupMembers: string[]
+}
+
+GroupName *-- input
+GroupDescription  *-- input
+GroupMemberInput  *-- input
+
+object button {
+    title: string,
+    color: string
+}
+
+object SaveButton {
+    GroupName: string
+    GroupDescription: string
+    GroupMembers: string
+}
+object CancleButton
+
+SaveButton *-- button
+CancleButton *-- button
+
+object overlay {
+    title: string
+}
+
+
+
+
+
+
+
+
+@enduml
