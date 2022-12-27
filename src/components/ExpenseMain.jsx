@@ -1,4 +1,4 @@
-import { Col, Row } from "react-bootstrap"
+import { Button, Col, Form, InputGroup, Row, Table } from "react-bootstrap"
 
 export const ExpenseMain = () => {
     return (
@@ -7,12 +7,58 @@ export const ExpenseMain = () => {
                 <Row className="justify-content-center">
                     Dutch Pay
                 </Row>
-                <Row className="justify-content-center">1. 비용 추가하기</Row>
+                <Row>
+                    <Row className="justify-content-center">1. 비용 추가하기</Row>
+                    <Row>
+                        <InputGroup>
+                            <Form.Control
+                                placeholder="결제한 날짜를 선택해주세요.">
+                            </Form.Control>
+                        </InputGroup>
+                    </Row>
+                    <Row>
+                    <InputGroup>
+                            <Form.Control
+                                placeholder="비용에 대한 설명을 입력해주세요.">
+                            </Form.Control>
+                        </InputGroup>
+                    </Row>
+                    <Row className="justify-content-center">
+                        <Col>
+                        <InputGroup>
+                            <Form.Control
+                                placeholder="비용은 얼마였나요?">
+                            </Form.Control>
+                        </InputGroup>
+                        </Col>
+                        <Col>
+                        <InputGroup>
+                            <Form.Control
+                                placeholder="누가 결제했나요?">
+                            </Form.Control>
+                        </InputGroup>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Button>추가하기</Button>
+                    </Row>
+                </Row>
                 <Row className="justify-content-center">2. 정산은 이렇게!</Row>
             </Col>
             <Col>
                 <Row className="justify-content-center">&#123;그룹 이름&#125;</Row>
-                <Row className="justify-content-center">리스트</Row>
+                <Row className="justify-content-center">
+                    <Table>
+                        <thead>
+                            <tr>
+                                <th>날짜</th>
+                                <th>내용</th>
+                                <th>결제자</th>
+                                <th>금액</th>
+                            </tr>
+                        </thead>
+                    </Table>
+                </Row>
             </Col>
         </Row>
     )
