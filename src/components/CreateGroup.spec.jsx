@@ -1,13 +1,18 @@
 import { render, screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
+import { RecoilRoot } from "recoil"
 import { CreateGroup } from "./CreateGroup"
 
 const renderComponent = () => {
-    render(<CreateGroup/>)
+    render(
+        <RecoilRoot>
+            <CreateGroup/>
+        </RecoilRoot>
+    )
 
-    const input = screen.getByPlaceholderText('2022 제주도 여행')
-    const saveBtn = screen.getByText('저장')
-    const errMsg = screen.getByText('그룹 이름을 입력해주세요.')
+    const input = screen.getByPlaceholderText('2023 제주도 여행')
+    const saveBtn = screen.getByText('저장하고 다음 단계로')
+    const errMsg = screen.getByText('그룹명을 입력해주세요.')
     
     return {input, saveBtn, errMsg}
 }
@@ -23,14 +28,14 @@ describe('그룹 생성 페이지', () => {
         const {saveBtn, errMsg} = renderComponent()
 
         await userEvent.click(saveBtn)
-        expect(errMsg).not.toBeNull() 
+        expect(errMsg).toHaveAttribute('data-valid', 'false')
     })
     test('그룹 이름 입력 후 저장 버튼 클릭 시, 저장 성공', async () => {
         const {input, saveBtn, errMsg} = renderComponent()
 
-        await userEvent.type((input, '예시 그룹명'))
+        await userEvent.type(input, '예시 그룹명')
         await userEvent.click(saveBtn)
 
-        expect(errMsg).toBeNull()
+        expect(errMsg).toHaveAttribute('data-valid', 'true')
     })
 })
