@@ -1,7 +1,8 @@
 /** @type {import('jest').Config} */
 const config = {
     verbose: true,
-    testEnvironment: "jsdom"
-};
+    testEnvironment: "jsdom",
+    setupFilesAfterEnv: ["<rootDir>/jest.setup.js"]
+}
 
 module.exports = config;
