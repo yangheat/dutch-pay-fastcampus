@@ -1,13 +1,33 @@
-import { Container } from "react-bootstrap"
+import { Button, Container, Form, Row } from "react-bootstrap"
 import styled from 'styled-components'
 import { OverlayWrapper } from "./shared/OverlayWrapper"
 
-export const CenteredOverlayForm = ({children}) => {
+export const CenteredOverlayForm = ({
+    title, validated, handleSubmit, children,  btnText
+}) => {
     return (
         <StyledCenteralizedContainer>
-            <StyledHeader>Dutch Pay</StyledHeader>
+            <StyledLogo>Dutch Pay</StyledLogo>
             <OverlayWrapper>
-                {children}
+                <Container>
+                    <Form
+                        noValidate
+                        validated={validated}
+                        onSubmit={handleSubmit}
+                    >
+                        <StyledCentralizedContent>
+                            <Row className="align-conent-itmes-start">
+                                <StyledTitle>{title}</StyledTitle>
+                            </Row>
+                            <Row className="align-conent-items-center">
+                                {children}
+                            </Row>
+                            <Row className="align-conent-items-end">
+                                <StyleSubmitBtn>{btnText}</StyleSubmitBtn>
+                            </Row>
+                        </StyledCentralizedContent>
+                    </Form>
+                </Container>
             </OverlayWrapper>
         </StyledCenteralizedContainer>
     )
@@ -24,7 +44,34 @@ const StyledCenteralizedContainer = styled(Container)`
     gap: 10px;
 `
 
-const StyledHeader = styled.h2`
+const StyledLogo = styled.h1`
     font-weight: 200;
     letter-spacing: 10px; 
+`
+const StyledTitle = styled.h2`
+    font-weight: 700;
+    line-height: 35px;
+    text-align: right;
+    word-break: keep-all;
+`
+
+const StyledCentralizedContent = styled(Row)`
+    align-items: center;
+    justify-content: center;
+    height: 60vh;
+    min-height: 200px;
+`
+
+export const StyleSubmitBtn = styled(Button).attrs({
+    type: 'submit'
+})`
+    background: #6610F2;
+    border-radius: 8px;
+    border: none;
+    font-size: 1rem;
+
+    &:hover {
+        background-color: #6610F2;
+        filter: brightness(80%);
+    }
 `
