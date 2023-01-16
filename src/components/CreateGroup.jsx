@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { Form } from "react-bootstrap"
+import { useNavigate } from "react-router-dom"
 import { useSetRecoilState } from "recoil"
 import { groupNameState } from "../state/groupName"
 import { CenteredOverlayForm, StyledRow, StyleH2, StyleSubmitBtn } from "./CenteredOverlayForm"
@@ -8,6 +9,8 @@ export const CreateGroup = () => {
     const [validated, setValidated] = useState(false);
     const [validGroupName, setValidGroupName] = useState(false)
     const setGroupName = useSetRecoilState(groupNameState)
+    const navigate = useNavigate();
+    
     const handleSubmit = (e) => {
         e.preventDefault()
         
@@ -20,6 +23,8 @@ export const CreateGroup = () => {
             setValidGroupName(false)
         }
         setValidated(true)
+
+        navigate("/members")
     }
 
     return (
