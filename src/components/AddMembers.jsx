@@ -5,16 +5,23 @@ import { groupMembersState } from "../state/groupMembers"
 import { useState } from "react"
 import { groupNameState } from "../state/groupName"
 import styled from "styled-components"
+import { useNavigate } from "react-router-dom"
 
 export const AddMembers = () => {
     const group = useRecoilValue(groupNameState)
     const [members, setMembers] = useRecoilState(groupMembersState)
     const [validated, setValidated] = useState(false)
+    const navigate = useNavigate()
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        setFormSubmit(true)
-        setValidated(true)
+
+        if (members.length === 0) {
+            setValidated(true)
+            return
+        }
+
+        navigate('/expense')
     }
 
     return (
