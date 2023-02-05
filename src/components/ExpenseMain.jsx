@@ -3,8 +3,6 @@ import { AddExpenseForm } from "./AddExpenseForm"
 
 export const ExpenseMain = () => {
     return (
-        <Row>
-            <AddExpenseForm />
-        </Row>
+        <AddExpenseForm />
     )
 }
