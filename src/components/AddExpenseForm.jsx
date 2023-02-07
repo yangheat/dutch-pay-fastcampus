@@ -1,13 +1,13 @@
 import { useState } from "react"
 import { Button, Col, Form, FormGroup, Row } from "react-bootstrap"
-import { useRecoilState, useRecoilValue } from "recoil"
+import { useRecoilValue, useSetRecoilState } from "recoil"
 import styled from "styled-components"
 import { expensesState } from "../state/expenses"
 import { groupMembersState } from "../state/groupMembers"
 
 export const AddExpenseForm = () => {
     const members = useRecoilValue(groupMembersState)
-    const [expenses, setExpenses] = useRecoilState(expensesState)
+    const setExpenses = useSetRecoilState(expensesState)
 
     const [validated, setValidated] = useState(false)
     const [validDescription, setValidDescription] = useState(false)
@@ -29,24 +29,27 @@ export const AddExpenseForm = () => {
         setValidCost(cost > 0)
         setValidPayer(payer !== null)
 
-        return description && cost && payer
+        return validDescription && validCost && validPayer
     }
 
     const handleSubmit = (e) => {
         e.preventDefault()
+        e.stopPropagation()
 
         if (checkFormValidity()) {
-            setExpenses(...expenses,
-                {
-                    date,
-                    description,
-                    cost,
-                    payer
-                }
-            )
+            const newExpense = {
+                date,
+                description,
+                cost,
+                payer
+            }
+
+            setExpenses((oldExpenses) => [
+                ...oldExpenses,
+                newExpense
+            ])
         }
         setValidated(true)
-
     }
 
     return (
@@ -62,7 +65,6 @@ export const AddExpenseForm = () => {
                         <StyledFormGroup>
                             <Form.Control
                                 type="date"
-                                name="expenseDate"
                                 placeholder="결제한 날짜를 선택해주세요."
                                 value={date}
                                 onChange={({target}) => setDate(target.value)}
@@ -75,7 +77,6 @@ export const AddExpenseForm = () => {
                         <StyledFormGroup>
                             <Form.Control
                                 type="text"
-                                name="expenseDescription"
                                 placeholder="비용에 대한 설명을 입력해주세요."
                                 value={description}
                                 onChange={({target}) => setDescription(target.value)}
@@ -93,7 +94,6 @@ export const AddExpenseForm = () => {
                         <StyledFormGroup>
                             <Form.Control
                                 type="number"
-                                name="expenseAmount"
                                 placeholder="비용은 얼마였나요?"
                                 value={cost}
                                 onChange={({target}) => setCost(parseInt(target.value) || '')}
