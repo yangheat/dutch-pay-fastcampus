@@ -25,11 +25,15 @@ export const AddExpenseForm = () => {
     const [payer, setPayer] = useState(null)
 
     const checkFormValidity = () => {
-        setValidDescription(description.length > 0)
-        setValidCost(cost > 0)
-        setValidPayer(payer !== null)
+        const descValid = description.length > 0
+        const costValid= cost > 0
+        const payerValid = payer !== null
 
-        return validDescription && validCost && validPayer
+        setValidDescription(descValid)
+        setValidCost(costValid)
+        setValidPayer(payerValid)
+
+        return descValid && costValid && payerValid
     }
 
     const handleSubmit = (e) => {
@@ -37,31 +41,25 @@ export const AddExpenseForm = () => {
         e.stopPropagation()
 
         if (checkFormValidity()) {
-            const newExpense = {
-                date,
-                description,
-                cost,
-                payer
-            }
-
             setExpenses((oldExpenses) => [
                 ...oldExpenses,
-                newExpense
+                {
+                    date,
+                    description,
+                    cost,
+                    payer
+                }
             ])
         }
         setValidated(true)
     }
 
     return (
-        <StyledWrapper xs={12} lg={6}>
+        <StyledWrapper>
             <Form noValidate onSubmit={handleSubmit}>
+                    <StyledTitle>1. 비용 추가하기</StyledTitle>
                 <Row>
-                    <Col xs={12} lg={6}>
-                        <StyledTitle>1. 비용 추가하기</StyledTitle>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col xs={12} lg={6}>
+                    <Col xs={12}>
                         <StyledFormGroup>
                             <Form.Control
                                 type="date"
@@ -73,7 +71,7 @@ export const AddExpenseForm = () => {
                     </Col>
                 </Row>
                 <Row>
-                    <Col xs={12} lg={6}>
+                    <Col xs={12}>
                         <StyledFormGroup>
                             <Form.Control
                                 type="text"
@@ -90,7 +88,7 @@ export const AddExpenseForm = () => {
                     </Col>
                 </Row>
                 <Row>
-                    <Col xs={12} lg={6}>
+                    <Col xs={12}>
                         <StyledFormGroup>
                             <Form.Control
                                 type="number"
@@ -107,7 +105,7 @@ export const AddExpenseForm = () => {
                     </Col>
                 </Row>
                 <Row>
-                    <Col xs={12} lg={6}>
+                    <Col xs={12}>
                         <StyledFormGroup>
                             <Form.Select
                                 name="expensePayer"
@@ -129,7 +127,7 @@ export const AddExpenseForm = () => {
                     </Col>
                 </Row>
                 <Row>
-                    <Col xs={12} lg={6} className="d-grid gap-2">
+                    <Col xs={12} className="d-grid gap-2">
                         <StyledSubmitBtn>추가하기</StyledSubmitBtn>
                     </Col>
                 </Row>
