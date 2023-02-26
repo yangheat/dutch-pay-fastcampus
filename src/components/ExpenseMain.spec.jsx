@@ -71,7 +71,6 @@ describe('비용 정산 메인 페이지', () => {
             expect(payerErrMsg).toHaveAttribute('data-valid', 'true')
         })
     })
-    
 
     describe('비용 리스트 컴포넌트', () => {
         test('비용 리스트 컴포넌트 렌더링', () => {
@@ -80,8 +79,19 @@ describe('비용 정산 메인 페이지', () => {
 
             expect(expenseListComponent).toBeInTheDocument()
         })
+    })
 
-        test('날짜, 내용, 결제자, 금액 데이터를 입력 후 추가 버튼 클릭 시 정산 리스트에 출력', async () => {
+    describe('정산 결과 컴포넌트', () => {
+        test('정산 결과 컴포넌트가 렌더링되는가?', () => {
+            renderComponent()
+
+            const component = screen.getByTestId(/정산은 이렇게/i)
+            expect(component.toBeInTheDocument())
+        })
+    })
+
+    describe('새로운 비용이 입력되었을 때', () => {
+        const addNewExpense = async () => {
             const {dateInput, descriptionInput, costInput, payerInput, addBtn} = renderComponent()
 
             await Promise.all([
@@ -90,27 +100,44 @@ describe('비용 정산 메인 페이지', () => {
                 userEvent.type(costInput, '30000'),
                 userEvent.selectOptions(payerInput, '영수')
             ])
-
+    
             await userEvent.click(addBtn)
-
+        }
+        test('날짜, 내용, 결제자, 금액 데이터가 정산 리스트에 추가된다.', async () => {
+            await addNewExpense()
+    
             const expenseListComponent = screen.getByTestId('expenseList')
             
             const dateValue = within(expenseListComponent).getByText('2023-02-07')
             expect(dateValue).toBeInTheDocument()
-
+    
             const descriptionValue = within(expenseListComponent).getByText('장보기')
             expect(descriptionValue).toBeInTheDocument()
-
+    
             const costValue = within(expenseListComponent).getByText('영수')
             expect(costValue).toBeInTheDocument()
-
+    
             const payerValue = within(expenseListComponent).getByText('30000 원')
             expect(payerValue).toBeInTheDocument()
-
+    
             const amountValue = within(expenseListComponent).getByText('2023-02-07')
             expect(amountValue).toBeInTheDocument()
         })
 
-        
+        test('정산 결과 또한 업데이트가 된다.', async () => {
+            await addNewExpense()
+
+            // \d명 - 총 (\d{1,3}\,)*\d{1,3} 원 지출.
+            // 한 사람 당 (\d{1,3},)*\d{1,3}원
+            // ・ \W+ -> \W+ - (\d{1,3},)*\d{1,3}원
+            // ・ \W+ -> \W+ - (\d{1,3},)*\d{1,3}원
+            
+            const totalText = /\d명 - 총 (\d{1,3}\,)*\d{1,3} 원 지출/i
+            expect(totalText.toBeInTheDocument())
+            const calText = /한 사람 당 (\d{1,3},)*\d{1,3}원/i
+            expect(calText.toBeInTheDocument())
+            const individualText = /\W+ -> \W+ - (\d{1,3},)*\d{1,3}원/i
+            expect(individualText.toBeInTheDocument())
+        })
     })
 })

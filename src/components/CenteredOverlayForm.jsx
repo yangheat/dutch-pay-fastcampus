@@ -1,13 +1,14 @@
 import { Button, Container, Form, Row } from "react-bootstrap"
 import styled from 'styled-components'
 import { OverlayWrapper } from "./shared/OverlayWrapper"
+import { ServiceLogo } from "./shared/ServiceLogo"
 
 export const CenteredOverlayForm = ({
     title, validated, handleSubmit, children,  btnText
 }) => {
     return (
         <StyledCenteralizedContainer>
-            <StyledLogo>Dutch Pay</StyledLogo>
+            <ServiceLogo />
             <OverlayWrapper>
                 <Container>
                     <Form

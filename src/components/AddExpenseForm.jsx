@@ -143,7 +143,7 @@ const StyledWrapper = styled.div`
     border-radius: 15px;
 `
 
-const StyledTitle = styled.h1`
+export const StyledTitle = styled.h1`
     color: #FFFBFB;
     text-align: center;
     font-weight: 700;

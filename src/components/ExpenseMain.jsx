@@ -4,6 +4,8 @@ import styled from "styled-components"
 import { groupNameState } from "../state/groupName"
 import { AddExpenseForm } from "./AddExpenseForm"
 import ExpenseTable from "./ExpenseTable"
+import { ServiceLogo } from "./shared/ServiceLogo"
+import { SummaryOfResult } from "./SummaryOfResult"
 
 export const ExpenseMain = () => {
     return (
@@ -25,25 +27,41 @@ export const ExpenseMain = () => {
 
 const LeftPane = () => (
     <Container>
-        <AddExpenseForm />
+        <StyledLeftGapRow className="">
+            <Row>
+                <ServiceLogo />
+            </Row>
+            <Row> 
+                <AddExpenseForm />
+            </Row>
+            <Row>
+                <SummaryOfResult />
+            </Row>
+        </StyledLeftGapRow>
     </Container>
 )
+
+const StyledLeftGapRow = styled(Row)`
+    gap: 5vh;
+    padding-top: 100px;
+    justify-content: center;
+`
 
 const RightPane = () => {
     const groupName = useRecoilValue(groupNameState)
     return (
-        <StyledContainer>
+        <StyledRightWrapper>
             <Row>
                 <StyledGroupName>{groupName || '그룹 이름'}</StyledGroupName>
             </Row>
             <Row>
                 <ExpenseTable />
             </Row>
-        </StyledContainer>
+        </StyledRightWrapper>
     )
 }
 
-const StyledContainer = styled(Container)`
+const StyledRightWrapper = styled(Container)`
     padding: 100px 31px 100px 31px;
 `
 
