@@ -6,6 +6,7 @@ import { useState } from "react"
 import { groupNameState } from "../state/groupName"
 import styled from "styled-components"
 import { useNavigate } from "react-router-dom"
+import { ROUTES } from "../routes"
 
 export const AddMembers = () => {
     const group = useRecoilValue(groupNameState)
@@ -16,12 +17,12 @@ export const AddMembers = () => {
     const handleSubmit = (e) => {
         e.preventDefault()
 
-        if (members.length === 0) {
+        if (members.length > 0) {
+            navigate(ROUTES.EXPENSE_MAIN)
+        } else {
             setValidated(true)
-            return
         }
 
-        navigate('/expense')
     }
 
     return (

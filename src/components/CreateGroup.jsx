@@ -2,6 +2,7 @@ import { useState } from "react"
 import { Form } from "react-bootstrap"
 import { useNavigate } from "react-router-dom"
 import { useSetRecoilState } from "recoil"
+import { ROUTES } from "../routes"
 import { groupNameState } from "../state/groupName"
 import { CenteredOverlayForm, StyledRow, StyleH2, StyleSubmitBtn } from "./CenteredOverlayForm"
 
@@ -18,13 +19,13 @@ export const CreateGroup = () => {
 
         if(form.checkValidity()) {
             setValidGroupName(true)
+            navigate(ROUTES.ADD_MEMBERS)
         } else {
             e.stopPropagation()
             setValidGroupName(false)
         }
         setValidated(true)
 
-        navigate("/members")
     }
 
     return (
