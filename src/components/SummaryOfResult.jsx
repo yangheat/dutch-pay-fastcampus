@@ -3,6 +3,9 @@ import styled from "styled-components"
 import { expensesState } from "../state/expenses"
 import { groupMembersState } from "../state/groupMembers"
 import { StyledTitle } from "./AddExpenseForm"
+import { Download } from "react-bootstrap-icons"
+import { toPng } from 'html-to-image'
+import { useCallback, useRef } from "react"
 
 export const calculateMinmumTransaction = (expenses, members, amountPerPerson) => {
     const minTransaction = []
@@ -78,7 +81,6 @@ export const calculateMinmumTransaction = (expenses, members, amountPerPerson) =
 }
 
 export const SummaryOfResult = () => {
-    
     const expenses = useRecoilValue(expensesState)
     const members = useRecoilValue(groupMembersState)
     // const members = ['A', 'B', 'C', 'D']
@@ -88,15 +90,33 @@ export const SummaryOfResult = () => {
     const splitAmout = totalAmount / memberCount
     const minimumTransaction = calculateMinmumTransaction(expenses, members, splitAmout)
 
+    const expenseSummaryScope = useRef(null)
+    const onDownloadBtnClick = useCallback(() => {
+        if (!expenseSummaryScope.current) return
+
+        toPng(expenseSummaryScope.current, {cacheBust: true}).then((dataUrl) => {
+            const link = document.createElement('a')
+            link.download = 'test.png'
+            link.href = dataUrl
+            link.click()
+        }).catch((err) => {
+            console.log(err)
+        })
+    }, [expenseSummaryScope])
+
     return (
-        <StyledWrapper>
+        <StyledWrapper
+            data-testid="expenseSummary"
+            ref={expenseSummaryScope}
+        >
             <StyledTitle>2. 정산은 이렇게!</StyledTitle>
+            <Download onClick={onDownloadBtnClick} data-testid="download-icon"/>
             {totalAmount > 0 && memberCount > 0 && (
             <>
                 <StyledSummary>
-                    <span>{memberCount} 명이서 총 {totalAmount} 원 지출</span>
+                    <span>{memberCount}명이서 총 {totalAmount}원 지출</span>
                     <br />
-                    <span>한 사람 당 {splitAmout} 원</span>
+                    <span>한 사람 당 {splitAmout}원</span>
                 </StyledSummary>    
                 <StyledUl>
                     {
