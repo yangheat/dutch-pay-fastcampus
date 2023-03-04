@@ -103,9 +103,12 @@ describe('비용 정산 메인 페이지', () => {
     
             await userEvent.click(addBtn)
         }
-        test('날짜, 내용, 결제자, 금액 데이터가 정산 리스트에 추가된다.', async () => {
-            await addNewExpense()
 
+        beforeEach(async () => {
+            await addNewExpense()
+        })
+
+        test('날짜, 내용, 결제자, 금액 데이터가 정산 리스트에 추가된다.', () => {
             const expenseListComponent = screen.getByTestId('expenseList')
             
             const dateValue = within(expenseListComponent).getByText('2023-02-07')
@@ -124,20 +127,33 @@ describe('비용 정산 메인 페이지', () => {
             expect(amountValue).toBeInTheDocument()
         })
 
-        test('정산 결과 또한 업데이트가 된다.', async () => {
-            await addNewExpense()
+        test('정산 결과 또한 업데이트가 된다.', () => {
+            const expenseSummaryComponent = screen.getByTestId('expenseSummary')
             
-            // \d명 - 총 (\d{1,3}\,)*\d{1,3} 원 지출.
-            // 한 사람 당 (\d{1,3},)*\d{1,3}원
-            // ・ \W+ -> \W+ - (\d{1,3},)*\d{1,3}원
-            // ・ \W+ -> \W+ - (\d{1,3},)*\d{1,3}원
+            const totalText = within(expenseSummaryComponent).getByText(/\d+명이서 총 \d+원 지출/)
+            expect(totalText).toBeInTheDocument()
+            
+            const calcText = within(expenseSummaryComponent).getByText(/한 사람 당 \d+원/i)
+            expect(calcText).toBeInTheDocument()
 
-            const totalText = /\d명 - 총 (\d{1,3}\,)*\d{1,3} 원 지출/i
-            expect(totalText.toBeInTheDocument())
-            const calText = /한 사람 당 (\d{1,3},)*\d{1,3}원/i
-            expect(calText.toBeInTheDocument())
-            const individualText = /\W+ -> \W+ - (\d{1,3},)*\d{1,3}원/i
-            expect(individualText.toBeInTheDocument())
+            const individualText = within(expenseSummaryComponent).getByText(/\W+가 \W+에게 \d+원 보내기/i)
+            expect(individualText).toBeInTheDocument()
+        })
+
+        test('정산 결과를 이미지 파일로 저장할 수 있다.', async () => {
+            const downloadBtn = screen.getByTestId('download-icon')
+            expect(downloadBtn).toBeInTheDocument()
+
+            const spiedToPng = jest.spyOn(htmlToImage, 'toPng')
+            const htmlToImage = require('html-to-image')
+            
+            await userEvent.click(downloadBtn)
+            
+            expect(spiedToPng).toHaveBeenCalledTimes(1)
+        })
+
+        afterEach(() => {
+            jext.resetAllMocks()
         })
     })
 })
