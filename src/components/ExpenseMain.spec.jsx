@@ -85,8 +85,8 @@ describe('비용 정산 메인 페이지', () => {
         test('정산 결과 컴포넌트가 렌더링되는가?', () => {
             renderComponent()
 
-            const component = screen.getByTestId(/정산은 이렇게/i)
-            expect(component.toBeInTheDocument())
+            const component = screen.getByText(/정산은 이렇게/i)
+            expect(component).toBeInTheDocument()
         })
     })
 
@@ -105,7 +105,7 @@ describe('비용 정산 메인 페이지', () => {
         }
         test('날짜, 내용, 결제자, 금액 데이터가 정산 리스트에 추가된다.', async () => {
             await addNewExpense()
-    
+
             const expenseListComponent = screen.getByTestId('expenseList')
             
             const dateValue = within(expenseListComponent).getByText('2023-02-07')
@@ -126,12 +126,12 @@ describe('비용 정산 메인 페이지', () => {
 
         test('정산 결과 또한 업데이트가 된다.', async () => {
             await addNewExpense()
-
+            
             // \d명 - 총 (\d{1,3}\,)*\d{1,3} 원 지출.
             // 한 사람 당 (\d{1,3},)*\d{1,3}원
             // ・ \W+ -> \W+ - (\d{1,3},)*\d{1,3}원
             // ・ \W+ -> \W+ - (\d{1,3},)*\d{1,3}원
-            
+
             const totalText = /\d명 - 총 (\d{1,3}\,)*\d{1,3} 원 지출/i
             expect(totalText.toBeInTheDocument())
             const calText = /한 사람 당 (\d{1,3},)*\d{1,3}원/i
