@@ -6,6 +6,7 @@ import { StyledTitle } from "./AddExpenseForm"
 import { Download } from "react-bootstrap-icons"
 import { toPng } from 'html-to-image'
 import { useCallback, useRef } from "react"
+import { Button } from "react-bootstrap"
 
 export const calculateMinmumTransaction = (expenses, members, amountPerPerson) => {
     const minTransaction = []
@@ -91,17 +92,22 @@ export const SummaryOfResult = () => {
     const minimumTransaction = calculateMinmumTransaction(expenses, members, splitAmout)
 
     const expenseSummaryScope = useRef(null)
+    const downloadBtn = useRef(null)
     const onDownloadBtnClick = useCallback(() => {
         if (!expenseSummaryScope.current) return
 
-        toPng(expenseSummaryScope.current, {cacheBust: true}).then((dataUrl) => {
-            const link = document.createElement('a')
-            link.download = 'test.png'
-            link.href = dataUrl
-            link.click()
-        }).catch((err) => {
-            console.log(err)
+        toPng(expenseSummaryScope.current, {
+            filter: (node) => node.dataset?.testid !== 'download-icon'
         })
+            .then((dataUrl) => {
+                const link = document.createElement('a')
+                link.download = 'settlement-summary.png'
+                link.href = dataUrl
+                link.click()
+            })
+            .catch((err) => {
+                console.error(err)
+            })
     }, [expenseSummaryScope])
 
     return (
@@ -110,7 +116,9 @@ export const SummaryOfResult = () => {
             ref={expenseSummaryScope}
         >
             <StyledTitle>2. 정산은 이렇게!</StyledTitle>
-            <Download onClick={onDownloadBtnClick} data-testid="download-icon"/>
+            <StyledButton onClick={onDownloadBtnClick} data-testid="download-icon" ref={downloadBtn}>
+                <Download />
+            </StyledButton>
             {totalAmount > 0 && memberCount > 0 && (
             <>
                 <StyledSummary>
@@ -134,6 +142,7 @@ export const SummaryOfResult = () => {
 }
 
 const StyledWrapper = styled.div`
+    position: relative;
     background: #683BA2;
     color: #FFFBFB;
     box-shadow: 3px 0px 4px rgba(0, 0, 0, 0.25);;
@@ -144,6 +153,24 @@ const StyledWrapper = styled.div`
 `
 const StyledSummary = styled.div`
     margin-top: 31px;
+`
+
+const StyledButton = styled(Button)`
+    background: none;
+    border: 0;
+    font-size: 25px;
+    position: absolute;
+    top: 15px;
+    right: 20px;
+
+    &:hover, &:active {
+        background: none;
+        opacity: 0.33;
+    }
+
+    &:active {
+        background: none !important;
+    }
 `
 
 const StyledUl = styled.ul`
