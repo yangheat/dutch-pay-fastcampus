@@ -84,7 +84,6 @@ export const calculateMinmumTransaction = (expenses, members, amountPerPerson) =
 export const SummaryOfResult = () => {
     const expenses = useRecoilValue(expensesState)
     const members = useRecoilValue(groupMembersState)
-    // const members = ['A', 'B', 'C', 'D']
     
     const totalAmount = expenses.reduce((prevAmout, currentExpense) => prevAmout + currentExpense.cost, 0)
     const memberCount = members.length 
@@ -162,6 +161,18 @@ const StyledButton = styled(Button)`
     position: absolute;
     top: 15px;
     right: 20px;
+    @media (max-width: 1000px) and (max-width: 350px) {
+        top: -5px;
+        right: -5px;
+    }
+    @media (max-width: 575px) {
+        top: 15px;
+        right: 20px;
+    }
+    @media (max-width: 350px) {
+        top: -5px;
+        right: -5px;
+    }
 
     &:hover, &:active {
         background: none;
