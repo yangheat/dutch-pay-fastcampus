@@ -161,7 +161,7 @@ const StyledButton = styled(Button)`
     position: absolute;
     top: 15px;
     right: 20px;
-    @media (max-width: 1000px) and (max-width: 350px) {
+    @media (max-width: 1000px) {
         top: -5px;
         right: -5px;
     }
