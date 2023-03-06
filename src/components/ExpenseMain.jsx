@@ -43,7 +43,7 @@ const LeftPane = () => (
 
 const StyledLeftGapRow = styled(Row)`
     gap: 5vh;
-    padding-top: 100px;
+    padding: 100px 0 100px;
     justify-content: center;
 `
 
