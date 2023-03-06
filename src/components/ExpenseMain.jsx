@@ -27,7 +27,7 @@ export const ExpenseMain = () => {
 
 const LeftPane = () => (
     <Container>
-        <StyledLeftGapRow className="">
+        <StyledLeftGapRow>
             <Row>
                 <ServiceLogo />
             </Row>

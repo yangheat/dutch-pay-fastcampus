@@ -33,7 +33,7 @@ export const CreateGroup = () => {
             title="먼저, 더치 페이할 그룹의 이름을 정해볼까요?"
             validated={validated}
             handleSubmit={handleSubmit}
-            btnText="저장하고 다음 단계로"
+            btnText="저장"
         >
             <Form.Group controlId="vaildationGroupName">
                 <Form.Control

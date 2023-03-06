@@ -11,7 +11,7 @@ const renderComponent = () => {
     )
 
     const input = screen.getByPlaceholderText('2023 제주도 여행')
-    const saveBtn = screen.getByText('저장하고 다음 단계로')
+    const saveBtn = screen.getByText('저장')
     const errMsg = screen.getByText('그룹명을 입력해주세요.')
     
     return {input, saveBtn, errMsg}
